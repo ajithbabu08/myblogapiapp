@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controller/posts_controller.dart';
+import '../model/user_model.dart';
 import 'addblog.dart';
 import 'blogdetails.dart';
 
@@ -23,6 +24,35 @@ class BlogsHomepage extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Center(
             child: Text("Blog PeN",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 25),)),
+
+
+
+        actions: [
+          Obx(() {
+            return postController.userList.isEmpty
+                ? CircularProgressIndicator() // or any other loading indicator
+                : DropdownButton<String>(
+              value: postController.selectedUser.value.name,
+              icon: Icon(Icons.arrow_drop_down),
+              onChanged: (String? newValue) {
+                postController.setSelectedUser(newValue);
+              },
+              items: postController.userList.map<DropdownMenuItem<String>>((dynamic user)
+              {
+                return DropdownMenuItem<String>(
+                  value: user.name,
+                  child: Text(user.name ?? ''),
+                );
+              }).toList(),
+            );
+          }),
+        ],
+
+
+
+
+
+
       ),
       body: SizedBox(child: Obx(() {
         if (postController.isLoading.value) {
@@ -35,12 +65,18 @@ class BlogsHomepage extends StatelessWidget {
                 itemCount: postController.postList.length,
                 itemBuilder: (context, index) {
                   final post = postController.postList[index];
-                  return GestureDetector(
+
+                  return postController.selectedUser!.value.userid == post.userId?
+
+                    GestureDetector(
                     onTap: () async {
+
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BlogDetailsScreen(mypost: post),
+                          builder: (context) {
+                            return  BlogDetailsScreen(mypost: post);
+                          } ,
                         ),
                       );
                     },
@@ -69,7 +105,7 @@ class BlogsHomepage extends StatelessWidget {
                               postController.deletePost(index);
 
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   backgroundColor: Colors.red,
                                   content: Text('Blog deleted successfully !'),
                                   duration: Duration(seconds: 2),
@@ -80,7 +116,7 @@ class BlogsHomepage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  );
+                  ): SizedBox();
                 },
               ),
             ),

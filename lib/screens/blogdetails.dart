@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myblogapiapp/model/posts_model.dart';
 
 
 class BlogDetailsScreen extends StatelessWidget {
-  final Map<String, dynamic> mypost;
+  Blogposts mypost;
   // final Blogposts mypost;
 
   BlogDetailsScreen({required this.mypost});
@@ -23,13 +24,13 @@ class BlogDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              mypost['title'],
+              mypost.title!,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.blue),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(mypost['body']),
+            child: Text(mypost.body!),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -40,7 +41,7 @@ class BlogDetailsScreen extends StatelessWidget {
           ),
           FutureBuilder(
             // You need to implement fetching comments logic here
-            future: fetchComments(mypost['id']),
+            future: fetchComments(mypost.id!),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
