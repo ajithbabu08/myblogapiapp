@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-
 import '../controller/posts_controller.dart';
-import '../model/user_model.dart';
 import 'addblog.dart';
 import 'blogdetails.dart';
 
@@ -26,7 +25,6 @@ class BlogsHomepage extends StatelessWidget {
             child: Text("Blog PeN",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 25),)),
 
 
-
         actions: [
           Obx(() {
             return postController.userList.isEmpty
@@ -48,29 +46,20 @@ class BlogsHomepage extends StatelessWidget {
           }),
         ],
 
-
-
-
-
-
       ),
       body: SizedBox(child: Obx(() {
         if (postController.isLoading.value) {
           return Center(child: CircularProgressIndicator());
         } else {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Expanded(
+          return Expanded(
               child: ListView.builder(
                 itemCount: postController.postList.length,
                 itemBuilder: (context, index) {
                   final post = postController.postList[index];
-
                   return postController.selectedUser!.value.userid == post.userId?
 
                     GestureDetector(
                     onTap: () async {
-
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -82,36 +71,43 @@ class BlogsHomepage extends StatelessWidget {
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                      decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      ),
-
-                        child: ListTile(
-                          title: Text(post.title!,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Text(post.body!,
-                              style: TextStyle(fontSize: 16,color: Colors.black),
-                              textAlign: TextAlign.justify,),
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red,),
-                            onPressed: () {
+                      child: Slidable(
+                        endActionPane: ActionPane(
+                          motion: StretchMotion(),
+                          children: [
+                            SlidableAction(onPressed: (BuildContext context){
                               postController.deletePost(index);
 
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text('Blog deleted successfully !'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
+                                  SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text("Blog deleted successfully !"),duration: Duration(seconds: 2),));
                             },
+                              icon: Icons.delete,
+                              backgroundColor: Colors.red,
+                              borderRadius: BorderRadius.circular(10),)
+                          ],
+                        ),
+
+
+                        child: Container(
+                        decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        ),
+
+                          child: ListTile(
+                            title: Text(post.title!,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 10,bottom: 10),
+                              child: Text(post.body!,
+                                style: TextStyle(fontSize: 14,color: Colors.black),
+                              ),
+                            ),
+
                           ),
                         ),
                       ),
@@ -119,7 +115,7 @@ class BlogsHomepage extends StatelessWidget {
                   ): SizedBox();
                 },
               ),
-            ),
+
           );
         }
       })),

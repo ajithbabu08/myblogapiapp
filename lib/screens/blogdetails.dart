@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myblogapiapp/model/posts_model.dart';
 
+import 'blogHome.dart';
+
 
 class BlogDetailsScreen extends StatelessWidget {
   Blogposts mypost;
@@ -14,23 +16,32 @@ class BlogDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black26,
       appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: Text('Post Details'),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BlogsHomepage()));
+          },
+        ),
+
+        title: Center(
+            child: Text('Post Details',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 25))),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               mypost.title!,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.blue),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold,color: Colors.black,),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(mypost.body!),
+            child: Text(mypost.body!,style: TextStyle(fontSize: 17)),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -44,7 +55,8 @@ class BlogDetailsScreen extends StatelessWidget {
             future: fetchComments(mypost.id!),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return Center(
+                    child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
@@ -54,8 +66,8 @@ class BlogDetailsScreen extends StatelessWidget {
                     itemCount: comments?.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(comments?[index]['name']),
-                        subtitle: Text(comments?[index]['body']),
+                        title: Text(comments?[index]['name'],style: TextStyle(color: Colors.black)),
+                        subtitle: Text(comments?[index]['body'],style: TextStyle(color: Colors.black)),
                       );
                     },
                   ),

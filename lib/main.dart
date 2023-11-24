@@ -1,226 +1,125 @@
 import 'package:flutter/material.dart';
 
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false,
-      title: 'Blog Management App',
+    return MaterialApp(
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a blue toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: MyApp(),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
-//
-// class BlogListScreen extends StatefulWidget {
-//   @override
-//   _BlogListScreenState createState() => _BlogListScreenState();
-// }
-//
-// class _BlogListScreenState extends State<BlogListScreen> {
-//   List<Map<String, dynamic>> posts = [];
-//   List<String> users = [];
-//   // late String selectedUser='';
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchData();
-//   }
-//
-//   Future<void> fetchData() async {
-//     final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
-//     final usersResponse = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
-//
-//     if (response.statusCode == 200 && usersResponse.statusCode == 200) {
-//       setState(() {
-//         posts = List<Map<String, dynamic>>.from(json.decode(response.body));
-//         users = List<String>.from(json.decode(usersResponse.body).map((user) => user['name']));
-//       });
-//     } else {
-//       throw Exception('Failed to load data');
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(backgroundColor: Colors.red,
-//         title: Text('Blog It'),
-//       ),
-//       body: Column(
-//         children: [
-//
-//           // /remove
-//           // DropdownButton(
-//           //   value: selectedUser,
-//           //   items: users.map((user) {
-//           //     return DropdownMenuItem(
-//           //       value: user,
-//           //       child: Text(user),
-//           //     );
-//           //   }).toList(),
-//           //   onChanged: (value) {
-//           //     setState(() {
-//           //       selectedUser = value!;
-//           //     });
-//           //   },
-//           // ),
-//           // /remove
-//
-//           Expanded(
-//             child: ListView.builder(
-//               itemCount: posts.length,
-//               itemBuilder: (context, index) {
-//                 final post = posts[index];
-//                 {
-//                   return GestureDetector(
-//                     onTap: () async {
-//                       await Navigator.push(
-//                         context,
-//                         MaterialPageRoute(
-//                           builder: (context) => BlogDetailsScreen(post: post),
-//                         ),
-//                       );
-//                     },
-//
-//                     child: ListTile(
-//                       // leading: fetchImages(post['id']),
-//                       title: Text(post['title'],
-//                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),textAlign: TextAlign.justify,),
-//                       subtitle: Text(post['body'],
-//                         style: TextStyle(fontSize: 20),textAlign: TextAlign.justify,),
-//                       trailing: IconButton(
-//                         icon: Icon(Icons.delete,color: Colors.red,),
-//                         onPressed: () {
-//                           // Implement delete functionality
-//                           // You might want to show a confirmation dialog
-//                           setState(() {
-//                             posts.removeAt(index);
-//                           });
-//                         },
-//                       ),
-//                     ),
-//                   );
-//                 }
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-// //   /remove
-// //   fetchImages(int postId) async{
-// //     final response= await http.get(Uri.parse("https://jsonplaceholder.typicode.com/albums"));
-// //   }
-// // }
-// //
-// //
-// // Future<List<dynamic>> fetchComments(int postId) async {
-// //   final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/$postId/comments'));
-// //
-// //   if (response.statusCode == 200) {
-// //     return json.decode(response.body);
-// //   } else {
-// //     throw Exception('Failed to load comments');
-// //   }
-// //
-// // /remove
-//
-// }
-//
-//
-// class BlogDetailsScreen extends StatelessWidget {
-//   final Map<String, dynamic> post;
-//
-//   BlogDetailsScreen({required this.post});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Colors.red,
-//         title: Text('Post Details'),
-//       ),
-//       body: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(
-//               post['title'],
-//               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.blue),
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(post['body']),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(
-//               'Comments:',
-//               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-//             ),
-//           ),
-//           FutureBuilder(
-//             // You need to implement fetching comments logic here
-//             future: fetchComments(post['id']),
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return CircularProgressIndicator();
-//               } else if (snapshot.hasError) {
-//                 return Text('Error: ${snapshot.error}');
-//               } else {
-//                 List? comments = snapshot.data;
-//                 return Expanded(
-//                   child: ListView.builder(
-//                     itemCount: comments?.length,
-//                     itemBuilder: (context, index) {
-//                       return ListTile(
-//                         title: Text(comments?[index]['name']),
-//                         subtitle: Text(comments?[index]['body']),
-//                       );
-//                     },
-//                   ),
-//                 );
-//               }
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Future<List<dynamic>> fetchComments(int postId) async {
-//     final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/$postId/comments'));
-//
-//     if (response.statusCode == 200) {
-//       return json.decode(response.body);
-//     } else {
-//       throw Exception('Failed to load comments');
-//     }
-//   }
-// }
-//
-// class AddBlogPostScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Add Blog Post'),
-//       ),
-//       body: Center(
-//         child: Text('Add Blog Post Screen'),
-//       ),
-//     );
-//   }
-// }
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      appBar: AppBar(
+        // TRY THIS: Try changing the color here to a specific color (to
+        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+        // change color while the other colors stay the same.
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          //
+          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+          // action in the IDE, or press "p" in the console), to see the
+          // wireframe for each widget.
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}

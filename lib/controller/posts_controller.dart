@@ -64,9 +64,7 @@ class BlogPost_Controller extends GetxController {
   void setSelectedUser(String? userName) {
     if (userName != null) {
       selectedUser.value = userList.firstWhere((user) => user.name == userName);
-      // Fetch blog posts for the selected user
-      // Implement this method based on your API or data structure
-      // Example: fetchPostsForUser(selectedUser.value.id);
+
     }
   }
 
